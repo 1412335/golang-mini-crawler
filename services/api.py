@@ -83,7 +83,7 @@ class Api(object):
         links = self.getDataLinks()
 
         self.recursive -= 1
-        for i, link in enumerate(links):
+        for link in links:
             self.url = link
             subdata = self.parseData()
             data.extend(subdata)

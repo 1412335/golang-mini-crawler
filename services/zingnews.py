@@ -6,11 +6,16 @@ class ZingNews(Api):
         super(ZingNews, self).__init__(url, recursive)
         self.baseUrl = ZING_NEWS
 
+    def isVideo(self):
+        return self.url.find(self.baseUrl + '/video') == 0
+
     def getAllLinks(self):
         return self.soup.select('.article-item .article-title a')
 
     def getDateTime(self):
         try:
+            if self.isVideo():
+                return self.soup.find('span', {'class': 'publish'}).string
             return self.soup.find('li', {'class': 'the-article-publish'}).string
         except Exception as e:
             print('[WARNING] Get datetime:', e)
@@ -18,8 +23,9 @@ class ZingNews(Api):
         
     def getAuthor(self):
         try:
-            author = self.soup.find('p', {'class': 'author'}).string
-            return author
+            if self.isVideo():
+                return self.soup.find('span', {'class': 'video-author'}).string
+            return self.soup.find('p', {'class': 'author'}).string
         except Exception as e:
             print('[WARNING] Get author:', e)
             return ''

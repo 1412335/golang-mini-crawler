@@ -3,5 +3,6 @@
 .idea/
 __pycache__/
 venv/
+crawl/
 
 *.sh
